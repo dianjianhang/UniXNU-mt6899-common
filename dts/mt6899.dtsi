@@ -1,0 +1,58 @@
+/*
+ * MT6899 (Dimensity 8400-Ultra) shared SoC description.
+ *
+ * Values marked CONFIRMED were read from the vendor rodin DTB extracted
+ * from the stock vendor_boot.img (UniXNU-rodin/.cache/firmware/
+ * rodin-vendor.dtb, vendor DTB reviewed 2026-11-15). TODO items still
+ * need review against the MT6899 vendor kernel sources.
+ */
+
+/ {
+    compatible = "mediatek,mt6899"; /* vendor DTB spells it "mediatek,MT6899" */
+    #address-cells = <2>;
+    #size-cells = <2>;
+
+    interrupt-parent = <&gic>;
+
+    cpus {
+        #address-cells = <1>;
+        #size-cells = <0>;
+
+        /*
+         * CONFIRMED topology (vendor rodin DTB): 8x Cortex-A725,
+         * enable-method psci, cpufreq domains 0/1/2.
+         * MPIDR affinities: cpu0..cpu3 = 0x000..0x300 (capacity 0x400),
+         * cpu4..cpu6 = 0x400..0x600 (capacity 0x3bb),
+         * cpu7 = 0x700 (capacity 0x3cb).
+         * Marketing frequencies: 1x 3.25 GHz + 3x 3.0 GHz + 4x 2.1 GHz.
+         */
+
+        /* TODO: full cpu nodes with idle states, once bindings are chosen */
+    };
+
+    gic: interrupt-controller@c400000 {
+        /* CONFIRMED from the vendor DTB */
+        compatible = "arm,gic-v3";
+        #interrupt-cells = <4>;
+        interrupt-controller;
+        reg = <0x0 0xc400000 0x0 0x40000>,  /* distributor */
+              <0x0 0xc440000 0x0 0x200000>; /* redistributor */
+    };
+
+    timer {
+        /* CONFIRMED from the vendor DTB (interrupt cells copied verbatim) */
+        compatible = "arm,armv8-timer";
+        interrupt-parent = <&gic>;
+        interrupts = <0x1 0xd 0x4 0x0>,  /* secure physical */
+                     <0x1 0xe 0x4 0x0>,  /* non-secure physical */
+                     <0x1 0xb 0x4 0x0>,  /* hypervisor */
+                     <0x1 0xa 0x4 0x0>;  /* virtual */
+        clock-frequency = <0xc65d40>; /* 13 MHz */
+    };
+
+    /* CONFIRMED: Mali GPU (Valhall generation, G720 class) at 0x13000000,
+     * compatible "mediatek,mali", "arm,mali-valhall" — driver work pending. */
+
+    /* TODO: watchdog, pinctrl, IOMMU (mtk_iommu), SYSTIMER, shared
+     * reserved-memory regions */
+};

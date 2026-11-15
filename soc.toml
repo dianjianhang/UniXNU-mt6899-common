@@ -1,0 +1,9 @@
+schema_version = 2
+
+[soc]
+name = "mt6899"
+description = "MediaTek Dimensity 8400-Ultra (MT6899): 8x Cortex-A725 (1x 3.25 GHz + 3x 3.0 GHz + 4x 2.1 GHz), Mali-G720 GPU; first port target: Redmi Turbo 4 / POCO X7 Pro (rodin)"
+source = "vendor data reviewed 2026-11-15 from: MiCode/Xiaomi_Kernel_OpenSource branch bsp-rodin-v-oss (commit 2cd69ee4193920840ee3c837384716a66b1faecd, GKI kernel) and MiCode/MTK_kernel_device_modules branch bsp-rodin-v-oss (commit bc2dfc01f75b5fbc42d614c8c39700022cba9323, board DTS: arch/arm64/boot/dts/mediatek/rodin.dts, rodin-mt6899-common.dtsi, mt6899.dts, xiaomi_mt6899_common.dts, cust_mt6899_touch_1220x2712.dtsi)"
+
+[components]
+include = ["ArmDTPlatform", "ArmCpu"]
