@@ -1,2 +1,15 @@
 # Ordered XNU patch series for MT6899. One patch per line, paths relative to
 # this directory; # starts a comment. An empty series is valid.
+#
+# The ARM64 and OS series omit two files they assume the SoC series supplies
+# (this is how every real UniXNU port does it; see docs .vitepress device
+# records for sirius / piano):
+#
+#   native-smp-secondary.patch  MAX_CPUS 4 -> 8 and Affinity1 core numbering;
+#                               MT6899 is 8x Cortex-A725 across clusters.
+#   sheng-platform-power.patch  the bsd_init.c PMGR call site that
+#                               zzz-boot-progress.patch quotes as context.
+#                               XNU_SHENG_PMGR is off for rodin, so the block
+#                               compiles to nothing but the context is needed.
+native-smp-secondary.patch
+sheng-platform-power.patch
